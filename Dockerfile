@@ -25,14 +25,14 @@ RUN apt update && apt install -y --no-install-recommends \
 
 ENV RUSTUP_HOME=/opt/rustup \
     CARGO_HOME=/opt/cargo \
-    PATH=/opt/cargo/bin:$PATH
+    PATH=/opt/cargo/bin:/opt/evcxr/bin:$PATH
 
 RUN mkdir -p /opt/rustup /opt/cargo && chown -R ${NB_UID}:${NB_GID} /opt/rustup /opt/cargo
 
 USER ${NB_UID}
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal \
-    && rustup component add rust-src \
-    && fix-permissions opt/rustup opt/cargo
+    && ~/.cargo/bin/rustup component add rust-src \
+    && fix-permissions /opt/rustup /opt/cargo
 
 # Copy only the compiled binaries from the builder stage
 COPY --from=builder /opt/evcxr/bin/evcxr_jupyter /opt/evcxr/bin/evcxr_jupyter
