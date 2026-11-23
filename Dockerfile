@@ -19,8 +19,7 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path \
 
 FROM ${BASE}
 RUN apt update && apt install -y --no-install-recommends \
-    gcc libc6-dev curl ca-certificates \
-    && apt clean \
+    gcc libc6-dev curl ca-certificates
 
 ENV RUSTUP_HOME=/opt/rustup \
     CARGO_HOME=/opt/cargo \
