@@ -48,4 +48,6 @@ jobs:
                   push: ${{ github.event_name != 'pull_request' }}
                   pull: true # Always pull the base image to ensure we have the latest version
                   tags: ${{ steps.meta.outputs.tags }}
-                  labels: ${{ steps.meta.outputs.labels }}
+                  labels: ${{ steps.meta.outputs.labels }}          
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
