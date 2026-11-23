@@ -18,8 +18,10 @@ RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path \
     && cargo install --locked evcxr_jupyter --root /opt/evcxr
 
 FROM ${BASE}
+USER root
 RUN apt update && apt install -y --no-install-recommends \
-    gcc libc6-dev curl ca-certificates
+    gcc libc6-dev curl ca-certificates \
+    && apt clean \
 
 ENV RUSTUP_HOME=/opt/rustup \
     CARGO_HOME=/opt/cargo \
