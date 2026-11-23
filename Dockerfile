@@ -36,7 +36,7 @@ RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal \
 
 # Copy only the compiled binaries from the builder stage
 COPY --from=builder /opt/evcxr/bin/evcxr_jupyter /opt/evcxr/bin/evcxr_jupyter
-RUN evxcr_jupyter --install
+RUN /opt/evcxr/bin/evcxr_jupyter --install
 RUN pip install --no-cache-dir \
     numpy \
     sympy \
