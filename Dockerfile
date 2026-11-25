@@ -35,7 +35,7 @@ RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal \
     && fix-permissions /opt/rustup /opt/cargo
     
 # Copy only the compiled binaries from the builder stage
-COPY --from=builder evcxr_jupyter evcxr_jupyter
+COPY --from=builder /opt/evcxr/bin/evcxr_jupyter /opt/evcxr/bin/evcxr_jupyter
 RUN evcxr_jupyter --install
 RUN pip install --no-cache-dir \
     numpy \
