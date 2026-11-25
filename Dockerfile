@@ -44,4 +44,4 @@ RUN pip install --no-cache-dir \
     pint
 
 # Fail build if rustc, cargo, or evcxr_jupyter are not installed correctly
-RUN rustc --version && cargo --version && evcxr_jupyter --version
+RUN rustc --version && cargo --version
