@@ -21,29 +21,27 @@ FROM ${BASE}
 USER root
 RUN apt update && apt install -y --no-install-recommends \
     gcc libc6-dev curl ca-certificates \
-    && apt clean \
+    && apt clean
 
 ENV RUSTUP_HOME=/opt/rustup \
     CARGO_HOME=/opt/cargo \
-    PATH=/opt/cargo/bin:/opt/evcxr/bin:$HOME/.cargo/bin:$PATH
+    PATH=/opt/cargo/bin:/opt/evcxr/bin:$PATH
 
 RUN mkdir -p /opt/rustup /opt/cargo && chown -R ${NB_UID}:${NB_GID} /opt/rustup /opt/cargo
 
 USER ${NB_UID}
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal \
-    && ~/.cargo/bin/rustup component add rust-src \
-    && ~/.cargo/bin/rustup default stable \
+    && rustup component add rust-src \
     && fix-permissions /opt/rustup /opt/cargo
-
-ENV RUSTUP_HOME=/opt/rustup \
-    CARGO_HOME=/opt/cargo \
-    PATH=/opt/cargo/bin:/opt/evcxr/bin:$HOME/.cargo/bin:$PATH
     
 # Copy only the compiled binaries from the builder stage
-COPY --from=builder /opt/evcxr/bin/evcxr_jupyter /opt/evcxr/bin/evcxr_jupyter
-RUN /opt/evcxr/bin/evcxr_jupyter --install
+COPY --from=builder evcxr_jupyter evcxr_jupyter
+RUN evcxr_jupyter --install
 RUN pip install --no-cache-dir \
     numpy \
     sympy \
     matplotlib \
     pint
+
+# Fail build if rustc, cargo, or evcxr_jupyter are not installed correctly
+RUN rustc --version && cargo --version && evcxr_jupyter --version
